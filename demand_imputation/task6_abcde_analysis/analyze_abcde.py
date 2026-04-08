@@ -2,8 +2,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 def main():
-    print("Loading 200k subset data (city_id=13)...")
-    df = pd.read_csv('/workspace/demand_imputation/train_city13_200k.csv')
+    print("Loading 100k subset data (city_id=4)...")
+    df = pd.read_csv('/workspace/demand_imputation/train_city4_100k.csv')
     
     print(f"Total rows loaded: {len(df)}")
     
@@ -37,10 +37,10 @@ def main():
         'Ratio': [a_count/total, b_count/total, c_count/total, d_count/total, e_count/total, f_count/total, g_count/total, h_count/total]
     })
     
-    csv_path = '/workspace/demand_imputation/task6_abcde_analysis/a_to_h_stats_city13.csv'
+    csv_path = '/workspace/demand_imputation/task6_abcde_analysis/a_to_h_stats_city4.csv'
     stats.to_csv(csv_path, index=False)
     
-    print("\nStats for A to H Classes in City 13:")
+    print("\nStats for A to H Classes in City 4:")
     print(stats.to_string(index=False))
     
     # Plotting
@@ -56,7 +56,7 @@ def main():
         plt.text(bar.get_x() + bar.get_width()/2.0, yval, f"{int(yval)}\n({ratio*100:.2f}%)", 
                  ha='center', va='bottom', fontweight='bold')
         
-    plt.title(f'ABCDE Class Distribution for City 13 (Total Rows: {total})')
+    plt.title(f'A to H Class Distribution for City 4 (Total Rows: {total})')
     plt.xlabel('Missing Hours Category')
     plt.ylabel('Number of Rows')
     
@@ -66,7 +66,7 @@ def main():
     plt.grid(axis='y', linestyle='--', alpha=0.7)
     plt.tight_layout()
     
-    plot_path = '/workspace/demand_imputation/task6_abcde_analysis/a_to_h_distribution_city13.png'
+    plot_path = '/workspace/demand_imputation/task6_abcde_analysis/a_to_h_distribution_city4.png'
     plt.savefig(plot_path)
     
     print(f"\nSaved CSV to: {csv_path}")

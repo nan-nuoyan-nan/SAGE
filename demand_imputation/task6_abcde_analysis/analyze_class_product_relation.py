@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 def main():
-    print("Loading 200k subset data (city_id=13)...")
-    df = pd.read_csv('/workspace/demand_imputation/train_city13_200k.csv')
+    print("Loading 100k subset data (city_id=4)...")
+    df = pd.read_csv('/workspace/demand_imputation/train_city4_100k.csv')
     
     # Map each row to its class based on stock_hour6_22_cnt
     def get_class(cnt):
@@ -31,7 +31,7 @@ def main():
     class_product_counts = class_product_counts.reindex(class_order)
     
     # Save the cross-tabulation to CSV
-    csv_path = '/workspace/demand_imputation/task6_abcde_analysis/class_product_distribution.csv'
+    csv_path = '/workspace/demand_imputation/task6_abcde_analysis/class_product_distribution_city4.csv'
     class_product_counts.to_csv(csv_path)
     print(f"\nSaved cross-tabulation of Classes vs Products to {csv_path}")
     
@@ -44,13 +44,13 @@ def main():
     # Use log scale for colors if values vary too much, but let's try standard first
     sns.heatmap(class_product_counts, cmap='YlOrRd', annot=False, fmt="d", linewidths=.5)
     
-    plt.title('Relationship between Stock Missing Classes (A-H) and Product IDs in City 13', fontsize=14)
+    plt.title('Relationship between Stock Missing Classes (A-H) and Product IDs in City 4', fontsize=14)
     plt.xlabel('Product ID (Sorted by total data count)', fontsize=12)
     plt.ylabel('Missing Hours Class', fontsize=12)
     
     plt.tight_layout()
     
-    plot_path = '/workspace/demand_imputation/task6_abcde_analysis/class_product_heatmap.png'
+    plot_path = '/workspace/demand_imputation/task6_abcde_analysis/class_product_heatmap_city4.png'
     plt.savefig(plot_path)
     
     print(f"Saved Relationship Heatmap to: {plot_path}")
@@ -64,7 +64,7 @@ def main():
     plt.legend(title='Product ID', bbox_to_anchor=(1.05, 1), loc='upper left', fontsize='small', ncol=2)
     plt.tight_layout()
     
-    stacked_path = '/workspace/demand_imputation/task6_abcde_analysis/class_product_stacked_bar.png'
+    stacked_path = '/workspace/demand_imputation/task6_abcde_analysis/class_product_stacked_bar_city4.png'
     plt.savefig(stacked_path)
     print(f"Saved Stacked Bar Chart to: {stacked_path}")
 
