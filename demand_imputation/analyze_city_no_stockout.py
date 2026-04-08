@@ -37,6 +37,16 @@ def main():
     # Plot no stockout rows
     plt.plot(range(len(city_stats)), city_stats['no_stockout_rows'], label='No Stockout (A-class) Rows', color='green', marker='s', markersize=4)
     
+    # Add text annotations for A-class data (count and ratio)
+    y_offset = city_stats['total_rows'].max() * 0.02  # dynamic offset for text
+    for i, (idx, row) in enumerate(city_stats.iterrows()):
+        count = int(row['no_stockout_rows'])
+        ratio = row['no_stockout_ratio'] * 100
+        # Format the text: Count \n (Ratio%)
+        text_str = f"{count}\n({ratio:.2f}%)"
+        plt.text(i, count + y_offset, text_str, ha='center', va='bottom', fontsize=9, color='green', fontweight='bold')
+    
+    
     plt.title('City Data Distribution & No-Stockout (A-class) Rows (Sorted by Total Count)')
     plt.xlabel('City Rank (by total rows)')
     plt.ylabel('Number of Rows')
