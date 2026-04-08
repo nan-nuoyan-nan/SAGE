@@ -1,0 +1,69 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+def main():
+    print("Loading 200k subset data (city_id=13)...")
+    df = pd.read_csv('/workspace/demand_imputation/train_city13_200k.csv')
+    
+    print(f"Total rows loaded: {len(df)}")
+    
+    # We only have one city here (city_id=13), but let's count the classes
+    # Total hours in 6:00-22:00 window is 16.
+    
+    # Class definitions:
+    # A-class: Missing 0 hours (stock_hour6_22_cnt == 16)
+    # B-class: Missing 1 or 2 hours (stock_hour6_22_cnt is 14 or 15)
+    # C-class: Missing 3 or 4 hours (stock_hour6_22_cnt is 12 or 13)
+    # D-class: Missing 5 or 6 hours (stock_hour6_22_cnt is 10 or 11)
+    # E-class: Missing 7 or more hours (stock_hour6_22_cnt <= 9)
+    
+    a_count = len(df[df['stock_hour6_22_cnt'] == 16])
+    b_count = len(df[df['stock_hour6_22_cnt'].isin([14, 15])])
+    c_count = len(df[df['stock_hour6_22_cnt'].isin([12, 13])])
+    d_count = len(df[df['stock_hour6_22_cnt'].isin([10, 11])])
+    e_count = len(df[df['stock_hour6_22_cnt'] <= 9])
+    
+    total = len(df)
+    
+    stats = pd.DataFrame({
+        'Class': ['A (0h missing)', 'B (1-2h missing)', 'C (3-4h missing)', 'D (5-6h missing)', 'E (>=7h missing)'],
+        'Count': [a_count, b_count, c_count, d_count, e_count],
+        'Ratio': [a_count/total, b_count/total, c_count/total, d_count/total, e_count/total]
+    })
+    
+    csv_path = '/workspace/demand_imputation/task6_abcde_analysis/abcde_stats_city13.csv'
+    stats.to_csv(csv_path, index=False)
+    
+    print("\nStats for ABCDE Classes in City 13:")
+    print(stats.to_string(index=False))
+    
+    # Plotting
+    plt.figure(figsize=(10, 6))
+    
+    # Bar chart is better here since we are showing categories for a single city
+    bars = plt.bar(stats['Class'], stats['Count'], color=['green', 'purple', 'red', 'brown', 'gray'])
+    
+    # Add text on top of bars
+    for bar, ratio in zip(bars, stats['Ratio']):
+        yval = bar.get_height()
+        plt.text(bar.get_x() + bar.get_width()/2.0, yval, f"{int(yval)}\n({ratio*100:.2f}%)", 
+                 ha='center', va='bottom', fontweight='bold')
+        
+    plt.title(f'ABCDE Class Distribution for City 13 (Total Rows: {total})')
+    plt.xlabel('Missing Hours Category')
+    plt.ylabel('Number of Rows')
+    
+    # Add some headroom for the text
+    plt.ylim(0, stats['Count'].max() * 1.15)
+    
+    plt.grid(axis='y', linestyle='--', alpha=0.7)
+    plt.tight_layout()
+    
+    plot_path = '/workspace/demand_imputation/task6_abcde_analysis/abcde_distribution_city13.png'
+    plt.savefig(plot_path)
+    
+    print(f"\nSaved CSV to: {csv_path}")
+    print(f"Saved Chart to: {plot_path}")
+
+if __name__ == '__main__':
+    main()
