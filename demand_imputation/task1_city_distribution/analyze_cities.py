@@ -10,12 +10,8 @@ try:
 except:
     pass
 
-print("Loading train dataset from Hugging Face...")
-# We only load the 'train' split as requested
-dataset = load_dataset("Dingdong-Inc/FreshRetailNet-50K", split='train')
-
-print("Extracting city_id...")
-df = dataset.select_columns(['city_id']).to_pandas()
+# Read the full original 4.85M training dataset
+df = pd.read_csv('/workspace/fresh_retail_dataset_tools/fresh_retail_train_df.csv')
 
 total_train_rows = len(df)
 print(f"Total train rows: {total_train_rows}")

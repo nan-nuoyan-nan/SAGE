@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # 读取刚才已经生成的 CSV 文件
-df = pd.read_csv('/workspace/demand_imputation/train_city_distribution.csv')
+df = pd.read_csv('/workspace/fresh_retail_dataset_tools/fresh_retail_train_df.csv')
 
 # 确保按数据量从大到小排序，或者按城市ID排序。为了折线图的连贯性，我们按城市ID排序
 df = df.sort_values(by='city_id')
